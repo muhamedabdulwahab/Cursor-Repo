@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Awesome Dropdown with Icons</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+
+        .dropdown-container {
+            position: relative;
+            margin: 30px 0;
+        }
+
+        .dropdown-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .dropdown-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .dropdown-button i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .dropdown-button .arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-button.active .arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin-top: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .dropdown-list.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .dropdown-item i {
+            margin-right: 15px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .dropdown-item.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .selected-value {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .selected-value strong {
+            color: #333;
+        }
+
+        /* Custom scrollbar */
+        .dropdown-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .dropdown-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .dropdown-list::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        .dropdown-list::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-magic"></i> Awesome Dropdown</h1>
+        
+        <div class="dropdown-container">
+            <button class="dropdown-button" id="dropdownButton">
+                <span>
+                    <i class="fas fa-list"></i>
+                    Select an option
+                </span>
+                <i class="fas fa-chevron-down arrow"></i>
+            </button>
+            
+            <div class="dropdown-list" id="dropdownList">
+                <div class="dropdown-item" data-value="home">
+                    <i class="fas fa-home"></i>
+                    Home
+                </div>
+                <div class="dropdown-item" data-value="user">
+                    <i class="fas fa-user"></i>
+                    User Profile
+                </div>
+                <div class="dropdown-item" data-value="settings">
+                    <i class="fas fa-cog"></i>
+                    Settings
+                </div>
+                <div class="dropdown-item" data-value="search">
+                    <i class="fas fa-search"></i>
+                    Search
+                </div>
+                <div class="dropdown-item" data-value="heart">
+                    <i class="fas fa-heart"></i>
+                    Favorites
+                </div>
+                <div class="dropdown-item" data-value="envelope">
+                    <i class="fas fa-envelope"></i>
+                    Messages
+                </div>
+                <div class="dropdown-item" data-value="bell">
+                    <i class="fas fa-bell"></i>
+                    Notifications
+                </div>
+                <div class="dropdown-item" data-value="star">
+                    <i class="fas fa-star"></i>
+                    Starred
+                </div>
+                <div class="dropdown-item" data-value="download">
+                    <i class="fas fa-download"></i>
+                    Downloads
+                </div>
+                <div class="dropdown-item" data-value="trash">
+                    <i class="fas fa-trash"></i>
+                    Trash
+                </div>
+            </div>
+        </div>
+        
+        <div class="selected-value" id="selectedValue">
+            <strong>Selected:</strong> No option selected
+        </div>
+    </div>
+
+    <script>
+        const dropdownButton = document.getElementById('dropdownButton');
+        const dropdownList = document.getElementById('dropdownList');
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        const selectedValue = document.getElementById('selectedValue');
+        let isOpen = false;
+
+        // Toggle dropdown
+        dropdownButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            toggleDropdown();
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!dropdownButton.contains(e.target) && !dropdownList.contains(e.target)) {
+                closeDropdown();
+            }
+        });
+
+        // Handle item selection
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const value = this.getAttribute('data-value');
+                const text = this.textContent.trim();
+                const icon = this.querySelector('i').className;
+                
+                // Update button text
+                dropdownButton.innerHTML = `
+                    <span>
+                        <i class="${icon}"></i>
+                        ${text}
+                    </span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                `;
+                
+                // Update selected value display
+                selectedValue.innerHTML = `
+                    <strong>Selected:</strong> ${text} (${value})
+                `;
+                
+                // Update selected state
+                dropdownItems.forEach(di => di.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                closeDropdown();
+            });
+        });
+
+        function toggleDropdown() {
+            if (isOpen) {
+                closeDropdown();
+            } else {
+                openDropdown();
+            }
+        }
+
+        function openDropdown() {
+            dropdownList.classList.add('show');
+            dropdownButton.classList.add('active');
+            isOpen = true;
+        }
+
+        function closeDropdown() {
+            dropdownList.classList.remove('show');
+            dropdownButton.classList.remove('active');
+            isOpen = false;
+        }
+
+        // Keyboard navigation
+        dropdownButton.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleDropdown();
+            }
+        });
+
+        dropdownItems.forEach((item, index) => {
+            item.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    const nextItem = dropdownItems[index + 1] || dropdownItems[0];
+                    nextItem.focus();
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    const prevItem = dropdownItems[index - 1] || dropdownItems[dropdownItems.length - 1];
+                    prevItem.focus();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
